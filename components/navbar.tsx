@@ -7,6 +7,7 @@ import {
 	NavbarItem,
 	NavbarMenuItem,
 } from "@nextui-org/navbar";
+import { ClerkProvider, SignedOut } from "@clerk/nextjs";
 import { Button } from "@nextui-org/button";
 import { Kbd } from "@nextui-org/kbd";
 import { Link } from "@nextui-org/link";
@@ -26,7 +27,7 @@ import {
 	HeartFilledIcon,
 	SearchIcon,
 } from "@/components/icons";
-
+import { SignOutButton, UserButton, SignedIn } from "@clerk/nextjs";
 import { Logo } from "@/components/icons";
 
 export const Navbar = () => {
@@ -52,6 +53,7 @@ export const Navbar = () => {
 	);
 
 	return (
+		
 		<NextUINavbar maxWidth="xl" position="sticky">
 			<NavbarContent className="basis-1/5 sm:basis-full" justify="start">
 				<NavbarBrand as="li" className="gap-3 max-w-fit">
@@ -96,16 +98,7 @@ export const Navbar = () => {
 				</NavbarItem>
 				<NavbarItem className="hidden lg:flex">{searchInput}</NavbarItem>
 				<NavbarItem className="hidden md:flex">
-					<Button
-            isExternal
-						as={Link}
-						className="text-sm font-normal text-default-600 bg-default-100"
-						href={siteConfig.links.sponsor}
-						startContent={<HeartFilledIcon className="text-danger" />}
-						variant="flat"
-					>
-						Sponsor
-					</Button>
+					
 				</NavbarItem>
 			</NavbarContent>
 
@@ -140,5 +133,6 @@ export const Navbar = () => {
 				</div>
 			</NavbarMenu>
 		</NextUINavbar>
+		
 	);
 };
