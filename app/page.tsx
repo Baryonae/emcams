@@ -49,6 +49,9 @@ export default function Home() {
 	if(isSignedIn){
 		redirect('/dashboard')
 	}
+	function clickingAction(){
+
+	}
 	return(
 		<div>
 			<div className = 'py-20 w-1/2 mx-4'>
@@ -62,7 +65,7 @@ export default function Home() {
 			</div>
 			</div>
 
-			<div className = 'w-full bg-gradient-to-r from-[#000000] via-[#00091b] to-[#000000] h-full flex justify-center border-t border-b border-gray-800'>
+			<div id = '#reviews' className = 'w-full bg-gradient-to-r from-[#000000] via-[#00091b] to-[#000000] h-full flex justify-center border-t border-b border-gray-800'>
 			<div className = 'py-20 px-4'>
 			{datas.map((data) => (	
 			<div className = 'inline-flex gap-4 px-6 max-sm: py-8 max-sm:justify-center'>
@@ -82,7 +85,7 @@ export default function Home() {
 			</div>
 			))}
 			</div></div>
-			<div className = 'px-8 py-20'><div className = 'text-4xl font-bold'>Some Title</div></div>
+			<div className = 'px-8 py-20' id = 'title'><div className = 'text-4xl font-bold'>Some Title</div></div>
 		</div>
 	)
 }
