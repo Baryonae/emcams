@@ -1,4 +1,9 @@
+import { Inter as FontSans } from "next/font/google"
 
+export const fontSans = FontSans({
+  subsets: ["latin"],
+  variable: "--font-sans",
+})
 export default function DocsLayout({
 	children,
 }: {
@@ -6,8 +11,8 @@ export default function DocsLayout({
 }) {
 	return (
 		<section>
-			<div className="">
-				{children}
+			<div className={fontSans.className}>
+				<div className = 'max-xs:hidden'>{children}</div>
 			</div>
 		</section>
 	);

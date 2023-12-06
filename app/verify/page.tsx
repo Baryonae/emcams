@@ -29,6 +29,9 @@ export default function PricingPage() {
         else if (JSON.stringify(thisUser) != '[]'){
             alert('you are already verified')
         }
+        if(email == ''){
+            alert('the email place is empty')
+        }
         else{
             alert('choose only one role')
             console.log(JSON.stringify(thisUser))
@@ -37,16 +40,16 @@ export default function PricingPage() {
     }
     if(verified === ''){
     return(
-        <div>
-        <div className = 'text-3xl font-bold py-4'>Verification</div>
+        <div className = 'border-1 border-gray-700 p-12 px-20 rounded-xl'>
+        <div className = 'text-3xl font-bold py-4 '>Verification</div>
         <Input label = 'Enter your Email' value = {email} onValueChange={setEmail} className = 'py-4'/>
-        <CheckboxGroup label = 'select your role' value = {role} onValueChange={setRole} className = 'py-4'>
+        <CheckboxGroup label = 'select your role' value = {role} onValueChange={setRole} className = 'py-4 gap-4 items-center'>
             <Checkbox value = 'writer'>Writer</Checkbox>
             <Checkbox value = 'editor'>Editor</Checkbox>
-            <Checkbox value = 'admin'>Admin</Checkbox>
+            <Checkbox value = 'admin'>Administrator</Checkbox>
         </CheckboxGroup>
         <div className = 'py-4'>
-        <Button onClick = {UploadingData}>Verify</Button>
+        <Button onClick = {UploadingData} className = 'px-20' variant = 'flat' color = 'success'>Verify</Button>
         </div>
         </div>
     )}

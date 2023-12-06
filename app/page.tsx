@@ -65,7 +65,7 @@ export default function Home() {
 			</div>
 			</div>
 
-			<div id = '#reviews' className = 'w-full bg-gradient-to-r from-[#000000] via-[#00091b] to-[#000000] h-full flex justify-center border-t border-b border-gray-800'>
+			<div id = '#reviews' className = 'w-full bg-gradient-to-r from-transparent via-[#00091b] to-transparent h-full flex justify-center border-t border-b border-gray-800'>
 			<div className = 'py-20 px-4'>
 			{datas.map((data) => (	
 			<div className = 'inline-flex gap-4 px-6 max-sm: py-8 max-sm:justify-center'>

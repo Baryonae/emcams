@@ -29,9 +29,11 @@ function App() {
         })
     }
     const UploadPost = async (e:any) => {
-        const file = e.target.files;
-
-        const {data, error} = await supabase.storage.from('illustrations').upload('google', file, {
+        const file = e.target.files?.[0]
+        const fileName = file?.name.toString()
+        const fakeFileName = `${user?.firstName}`
+        console.log(fileName)
+        const {data, error} = await supabase.storage.from('illustrations').upload(fakeFileName, file, {
             cacheControl: '3600',
             upsert: true
         })
