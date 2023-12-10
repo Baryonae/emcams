@@ -1,7 +1,7 @@
 
 'use client'
 import React, { useState } from 'react'
-import {Card, CardHeader, CardBody, CardFooter, Divider, Link, Image, Button, Chip, Snippet, Input, CircularProgress} from "@nextui-org/react";
+import {Card, CardHeader, CardBody, CardFooter, Divider, Link, Image, Button, Chip, Snippet, Input, CircularProgress, Progress} from "@nextui-org/react";
 import { HiMiniCog } from "react-icons/hi2";
 import { Inter as FontSans } from "next/font/google"
 import {Archivo as ArcFont} from 'next/font/google'
@@ -10,7 +10,16 @@ import supabase from './client'
 import { UserButton, useUser } from '@clerk/nextjs';
 import { MdOutlinePending } from "react-icons/md";
 import { CiLocationArrow1 } from "react-icons/ci";
+import UserTable from './userTable';
 
+interface User {
+  id: number;
+  username: string;
+  role: string | null;
+  assignedMagazine?: string | null;
+  submissionStatus?: string | null;
+
+}
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -21,7 +30,8 @@ const arcFont = ArcFont({
 })
 
 function Admin() {
-      const { isLoaded, isSignedIn, user } = useUser();
+    const [userData, setUserData] = useState<User[]>([]);
+    const { isLoaded, isSignedIn, user } = useUser();
     const [magazineData, setMagazineData] = useState('')
     const [status, setStatus] = useState('')
     const [owner, setOwner] = useState('')
@@ -32,24 +42,46 @@ function Admin() {
     const [magazineTokenValue, setMagazineTokenValue] = useState('')
     const [pendingScreen, setPendingScreen] = useState('hidden')
     const [youText, setYouText] = useState('')
+    const [pendingUsers, setPendingUsers] = useState<User[]>([])
+    const [progress, setProgress] = useState(0)
+    const [progressValue, setProgressValue] = useState(``)
+    const [username, setUsername] = useState('')
 
     async function getMagazines(){
-        const {data:magazines} = await supabase.from('users').select()
+        const {data:magazines} = await supabase.from('users').select().eq('username', user?.firstName)
+        const {data: users} = await supabase.from('users').select().eq('assignedMagazine', magazineData)
         const {data: magaDetails} = await supabase.from('magazines').select('status').eq('magazine_name', magazineData)
         const {data: magaOwner} = await supabase.from('magazines').select('owner').eq('magazine_name', magazineData)
-        const ownerName = JSON.stringify(magaOwner).slice(11, -3)
         const {data: roles} = await supabase.from('users').select('role').eq('username', user?.firstName)
         const {data: userTokens} = await supabase.from('users').select('userToken').eq('username', user?.firstName)
         const {data: pendingAssignedMagazine} = await supabase.from('users').select('pendingMagazineRequest').eq('username', user?.firstName)
+        const {data: pendingUsersQuery} = await supabase.from('users').select().eq('pendingMagazineRequest', magazineData)
+        const {data: submittedUsers} = await supabase.from('users').select().match({assignedMagazine: magazineData, submissionStatus: 'submitted'})
+        if(submittedUsers){
+            const progress = Math.trunc(submittedUsers?.length / userData?.length * 100)
+            const progressValue = `${submittedUsers?.length} / ${userData?.length}`
+            setProgress(progress)
+            setProgressValue(progressValue)
+        }
+        if(user?.firstName){
+            setUsername(user?.firstName)
+        }
+        const ownerName = JSON.stringify(magaOwner).slice(11, -3)
         setRole(JSON.stringify(roles).slice(10, -3))
         setToken(JSON.stringify(userTokens).slice(15, -3))
         setOwner(ownerName)
-       
-        if(JSON.stringify(pendingAssignedMagazine) != '[{"pendingMagazineRequest":null}]') {
+        if(pendingUsersQuery){
+            setPendingUsers(pendingUsersQuery)
+        }
+        if(users){
+            setUserData(users)
+        }
+
+        if(JSON.stringify(pendingAssignedMagazine) !== '[{"pendingMagazineRequest":null}]') {
             setPendingScreen('')
             setNotFoundVisiblity('hidden')
             setMagazineVisibility('hidden')
-        }else if (JSON.stringify(pendingAssignedMagazine) == '[{"pendingMagazineRequest":null}]'){
+        }else if (JSON.stringify(pendingAssignedMagazine) === '[{"pendingMagazineRequest":null}]'){
             setPendingScreen('hidden')
             setNotFoundVisiblity('')
             setMagazineVisibility('hidden')
@@ -75,6 +107,11 @@ function Admin() {
         const {data: leaveMagazine} = await supabase.from('users').update({assignedMagazine: null}).eq('username', user?.firstName)
         location.reload()
     }
+    async function AllowAccess(usernameValue:string){
+        const {data: deletePending} = await supabase.from('users').update({pendingMagazineRequest: null}).match({username: usernameValue })
+        const {data: allowPending} = await supabase.from('users').update({assignedMagazine: magazineData}).match({username: usernameValue })
+        location.reload()
+    }
     async function joinMagazine(){
         const {data:joining} = await supabase.from('magazines').select().eq('magazineToken', magazineTokenValue)
         
@@ -84,7 +121,7 @@ function Admin() {
                 const magazineNameValue = JSON.stringify(checkMagazine).slice(19, -3)
 
                 const {data: UpsertData} = await supabase.from('users').update({'pendingMagazineRequest': magazineNameValue}).eq('username', user?.firstName)
-                location.reload()
+                //location.reload()
                 
             }
     }
@@ -94,7 +131,12 @@ function Admin() {
         return(
             
             <div className = {arcFont.className}>
-
+                {userData.length === 0 && ( <Progress      size="sm"
+                isIndeterminate
+                aria-label="Loading..."
+                className="max-w-md" />)}
+                {userData?.length > 0 && (
+                    <div>
                     <div className = 'inline-flex pt-8 max-sm:flex-col max-sm:flex max-sm:justify-center font-thin'>
                         <div className = 'flex-col'>
 
@@ -155,23 +197,80 @@ function Admin() {
                         </div></div></div>
                         <div>
                             <div className = 'my-4 bg-black border-1 border-gray-700 rounded-2xl p-6 h-36 inline-flex'>
-                                <CircularProgress
+                                {username.length > 0 && (
+                                    <CircularProgress
                                     classNames={{
                                         svg: "w-24 h-26 drop-shadow-md",
                                         indicator: 'stroke-violet-400',
                                         track: "stroke-transparent",
                                         value: "text-sm font-thin text-white",
                                     }}
-                                    value={70}
+                                    value={progress}
                                     showValueLabel={true}
                                     /> 
+                                ) }
+                                {owner.length === 0 && (
+                                    <div>Loading</div>
+                                )}
+                                
                                     <div className = 'w-44 p-6'>
-                                        <div className = 'text-xl'>1/4 Submissions</div>
+                                        <div className = 'text-xl'>{progressValue} Submissions</div>
                                     </div>
                             </div>
+                            
                         </div>
+                        </div>
+                        <div className = 'px-8'>
+                            
+                            {userData?.length === 0 && <p>Loading...</p>}
+                            {userData?.length > 0 && (
+                                <Table aria-label="Users" className = 'w-unit-8xl h-96'>
+                                <TableHeader>
+                                    <TableColumn>NAME</TableColumn>
+                                    <TableColumn>ROLE</TableColumn>
+                                    <TableColumn>STATUS</TableColumn>
+                                    <TableColumn>Customize</TableColumn>
+                                </TableHeader>
+                                <TableBody emptyContent={"No users to display"}>
+                                    {userData?.map((user) => (
+                                    
+                                    <TableRow key={user.id}>
+                                        <TableCell>{user.username}</TableCell>
+                                        <TableCell>{user.role}</TableCell>
+                                        <TableCell><Chip color = 'warning' variant = 'flat'>{user.submissionStatus}</Chip></TableCell>
+                                        <TableCell><Button color = 'danger' variant = 'flat'>Kick</Button></TableCell>
+                                    </TableRow>
+                                    ))}
+                                </TableBody>
+                                </Table>
+                            )}
                         </div>
                     </div>
+                    <div>
+
+                            <div className = 'border-1 border-gray-700 h-96 w-unit-8xl p-10 px-14 rounded-2xl'>
+                                <Table className = 'w-96 h-96' removeWrapper>
+                                    <TableHeader>
+                                        <TableColumn>Username</TableColumn>
+                                        <TableColumn>Role opted For</TableColumn>
+                                        <TableColumn>Allow</TableColumn>
+                                    </TableHeader>
+                                    <TableBody emptyContent={"No users to display"}>
+                                        {pendingUsers.map((user) => (
+                                            <TableRow>
+                                                <TableCell>{user.username}</TableCell>
+                                                <TableCell>{user.role}</TableCell>
+                                                <TableCell><Button variant = 'flat' color = 'success'onClick = {() => {
+                                                    AllowAccess(user.username)
+                                                }}>Allow Access</Button></TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </div>
+                    </div>
+                    </div>
+                    )}
                     </div>
 )
 }

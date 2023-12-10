@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from 'react'
-import {Card, CardHeader, CardBody, CardFooter, Divider, Link, Image, Button, Chip, Snippet, Input} from "@nextui-org/react";
+import {Card, CardHeader, CardBody, CardFooter, Divider, Link, Image, Button, Chip, Snippet, Input, Pagination} from "@nextui-org/react";
 import { HiMiniCog } from "react-icons/hi2";
 import { Inter as FontSans } from "next/font/google"
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue} from "@nextui-org/react";
@@ -41,12 +41,13 @@ function Writer() {
     const [pendingScreen, setPendingScreen] = useState('hidden')
 
     async function getMagazines(){
-        const {data:magazines} = await supabase.from('users').select()
+        const {data:magazines} = await supabase.from('users').select().eq('username', user?.firstName)
         const {data: magaDetails} = await supabase.from('magazines').select('status').eq('magazine_name', magazineData)
         const {data: magaOwner} = await supabase.from('magazines').select('owner').eq('magazine_name', magazineData)
         const ownerName = JSON.stringify(magaOwner).slice(11, -3)
         const {data: roles} = await supabase.from('users').select('role').eq('username', user?.firstName)
         const {data: userTokens} = await supabase.from('users').select('userToken').eq('username', user?.firstName)
+        const {data: users} = await supabase.from('users').select()
         const {data: pendingAssignedMagazine} = await supabase.from('users').select('pendingMagazineRequest').eq('username', user?.firstName)
         setRole(JSON.stringify(roles).slice(10, -3))
         setToken(JSON.stringify(userTokens).slice(15, -3))
