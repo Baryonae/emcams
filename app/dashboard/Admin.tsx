@@ -32,7 +32,6 @@ import supabase from "./client";
 import { UserButton, useUser } from "@clerk/nextjs";
 import { MdOutlinePending } from "react-icons/md";
 import { CiLocationArrow1 } from "react-icons/ci";
-import UserTable from "./userTable";
 import {
   Modal,
   ModalContent,
