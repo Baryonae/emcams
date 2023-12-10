@@ -11,6 +11,9 @@ import { UserButton, useUser } from '@clerk/nextjs';
 import { MdOutlinePending } from "react-icons/md";
 import { CiLocationArrow1 } from "react-icons/ci";
 import UserTable from './userTable';
+import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure} from "@nextui-org/react";
+import {Tabs, Tab} from "@nextui-org/react";
+
 
 interface User {
   id: number;
@@ -46,6 +49,9 @@ function Admin() {
     const [progress, setProgress] = useState(0)
     const [progressValue, setProgressValue] = useState(``)
     const [username, setUsername] = useState('')
+    const {isOpen, onOpen, onOpenChange} = useDisclosure();
+    const [totalSubmissions, setTotalSubmissions] = useState<User [] >([])
+    const [submissionColor, setSubmissionColor] = useState('warning')
 
     async function getMagazines(){
         const {data:magazines} = await supabase.from('users').select().eq('username', user?.firstName)
@@ -57,6 +63,10 @@ function Admin() {
         const {data: pendingAssignedMagazine} = await supabase.from('users').select('pendingMagazineRequest').eq('username', user?.firstName)
         const {data: pendingUsersQuery} = await supabase.from('users').select().eq('pendingMagazineRequest', magazineData)
         const {data: submittedUsers} = await supabase.from('users').select().match({assignedMagazine: magazineData, submissionStatus: 'submitted'})
+        const {data: totalSubmissionsRequired} = await supabase.from('users').select().match({assignedMagazine: magazineData, role: 'writer'})
+        if(totalSubmissionsRequired){
+            setTotalSubmissions(totalSubmissionsRequired)
+        }
         if(submittedUsers){
             const progress = Math.trunc(submittedUsers?.length / userData?.length * 100)
             const progressValue = `${submittedUsers?.length} / ${userData?.length}`
@@ -201,7 +211,7 @@ function Admin() {
                                     <CircularProgress
                                     classNames={{
                                         svg: "w-24 h-26 drop-shadow-md",
-                                        indicator: 'stroke-violet-400',
+                                        indicator: 'stroke-violet-500',
                                         track: "stroke-transparent",
                                         value: "text-sm font-thin text-white",
                                     }}
@@ -224,32 +234,44 @@ function Admin() {
                             
                             {userData?.length === 0 && <p>Loading...</p>}
                             {userData?.length > 0 && (
-                                <Table aria-label="Users" className = 'w-unit-8xl h-96'>
-                                <TableHeader>
-                                    <TableColumn>NAME</TableColumn>
-                                    <TableColumn>ROLE</TableColumn>
-                                    <TableColumn>STATUS</TableColumn>
-                                    <TableColumn>Customize</TableColumn>
-                                </TableHeader>
-                                <TableBody emptyContent={"No users to display"}>
-                                    {userData?.map((user) => (
-                                    
-                                    <TableRow key={user.id}>
-                                        <TableCell>{user.username}</TableCell>
-                                        <TableCell>{user.role}</TableCell>
-                                        <TableCell><Chip color = 'warning' variant = 'flat'>{user.submissionStatus}</Chip></TableCell>
-                                        <TableCell><Button color = 'danger' variant = 'flat'>Kick</Button></TableCell>
-                                    </TableRow>
-                                    ))}
-                                </TableBody>
-                                </Table>
+                                <Tabs>
+                                    <Tab key = '1' title = 'Candidates'>
+                                        
+                                        <Table aria-label="Users" className = 'w-unit-8xl h-72'>
+                                        <TableHeader>
+                                            <TableColumn>NAME</TableColumn>
+                                            <TableColumn>ROLE</TableColumn>
+                                            <TableColumn>STATUS</TableColumn>
+                                            <TableColumn>Customize</TableColumn>
+                                        </TableHeader>
+                                        <TableBody emptyContent={"No users to display"}>
+                                           
+                                            {userData?.map((user) => (
+                                                 <TableRow key={user.id}>
+                                                <TableCell>{user.username}</TableCell>
+                                                <TableCell>{user.role}</TableCell>
+                                                <TableCell><Chip color = 'warning' variant = 'flat'>{user.submissionStatus}</Chip></TableCell>
+                                                <TableCell><Button color = 'danger' variant = 'flat'>Kick</Button></TableCell>
+                                            </TableRow>
+                                            ))}
+                                        </TableBody>
+                                        </Table>
+                                    </Tab>
+                                    <Tab key = '2' title = 'Coming Soon'>
+                                        <Card className = 'w-unit-8xl h-72'>
+                                            <CardBody>
+                                                More Features Coming Soon!
+                                            </CardBody>
+                                        </Card>
+                                    </Tab>
+                                </Tabs>
                             )}
                         </div>
                     </div>
                     <div>
 
-                            <div className = 'border-1 border-gray-700 h-96 w-unit-8xl p-10 px-14 rounded-2xl'>
-                                <Table className = 'w-96 h-96' removeWrapper>
+                            <div className = 'border-1 border-gray-700 h-60 w-unit-8xl p-10 px-14 rounded-2xl'>
+                                <Table className = 'w-96 h-60' removeWrapper>
                                     <TableHeader>
                                         <TableColumn>Username</TableColumn>
                                         <TableColumn>Role opted For</TableColumn>
