@@ -10,6 +10,18 @@ import Writer from './Writer'
 import { redirect } from "next/navigation";
 import { Inter as FontSans } from "next/font/google"
 import Admin from "./Admin";
+
+interface User {
+  id: number;
+  username: string;
+  role: string | null;
+  assignedMagazine?: string | null;
+  submissionStatus?: string | null;
+
+}
+
+
+
 export default function DocsPage() {
 	 const { isLoaded, isSignedIn, user } = useUser();
 	 const [verifiedStatus, setVerifiedStatus] = useState('Not verified')
@@ -19,15 +31,20 @@ export default function DocsPage() {
 	 const [writerDiv, setWriterDiv] = useState('hidden')
 	 const [editorDiv, setEditorDiv] = useState('hidden')
 	 const [adminDiv, setAdminDiv] = useState('hidden')
+	 const [users, setUsers] = useState<User[] >([])
 
 	 async function checkVerification(){
 			const {data: userSomething} = await supabase.from('users').select().eq('username', user?.firstName)
 			const {data: roles} = await supabase.from('users').select().eq('username', user?.firstName)
+			const {data: usersData} = await supabase.from('users').select()
 			if(JSON.stringify(userSomething) != '[]'){
 				setVerifiedStatus('Verified')
 				setVisibility('')
 				setVerifyButton('hidden')
-
+				
+			}
+			if(usersData){
+				setUsers(usersData)
 			}
 			roles?.map((role) => {
 				if(role.role == 'writer'){
@@ -44,11 +61,13 @@ export default function DocsPage() {
 	checkVerification()
 
 	if(isSignedIn){
-	
+	if(users.length > 0 ){
 	return (
 		
 		<div>
-			<ClerkLoading><div className = 'h-full flex justify-center items-center'><Spinner /></div></ClerkLoading>
+			
+			<ClerkLoading>
+			<div className = 'h-full flex justify-center items-center'><Spinner /></div></ClerkLoading>
 			<ClerkLoaded>
 			<div className = 'font-bold text-3xl inline-flex gap-4 gap'>Dashboard <Chip size = 'sm' color="secondary" variant="flat" className = 'my-2'>New</Chip><div className = 'flex justify-end'></div></div>
 			<div className = 'py-4'>welcome, {user?.firstName} !<div className = 'px-4 inline-flex'>
@@ -69,9 +88,12 @@ export default function DocsPage() {
 			</ClerkLoaded>
 			
 		</div>
-		
 			
 	);
+	}
+	else{
+		return<p><Spinner /></p>
+	}
 	}
 	else{
 		return(

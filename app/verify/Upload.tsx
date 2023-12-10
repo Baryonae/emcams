@@ -1,9 +1,5 @@
-'use server'
-import React from 'react'
+import React from "react";
 
-async function Upload(buttonPressed) {
-    const isButtonPressed = await buttonPressed
-    console.log(isButtonPressed)
-}
+function Upload() {}
 
-export default Upload
+export default Upload;
