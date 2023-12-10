@@ -1,23 +1,26 @@
-import { Inter as FontSans } from "next/font/google"
 import clsx from "clsx";
+import { Fira_Code as FontMono, Inter as FontSans } from "next/font/google"
 
 export const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
 })
-export default function DocsLayout({
+export default function AboutLayout({
 	children,
 }: {
 	children: React.ReactNode;
 }) {
 	return (
-		<section className = {clsx(
+		<div className={clsx(
 					"min-h-screen bg-background font-sans antialiased",
 					fontSans.variable
 				)}>
-			<div className={fontSans.className}>
-				<div className = 'max-xs:hidden'>{children}</div>
+		<section className="py-8 md:py-10">
+			<div className="">
+				{children}
 			</div>
 		</section>
+		</div>
+
 	);
 }

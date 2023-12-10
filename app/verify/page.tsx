@@ -6,6 +6,11 @@ import supabase from './client'
 import { useState } from "react"
 import {CheckboxGroup, Checkbox, Link} from "@nextui-org/react";
 import { redirect } from 'next/navigation'
+import { Inter as FontSans } from "next/font/google"
+const fontSans = FontSans({
+  subsets: ["latin"],
+  variable: "--font-sans",
+})
 
 export default function PricingPage() {
     const [email, setEmail] = useState('')
@@ -40,8 +45,9 @@ export default function PricingPage() {
     }
     if(verified === ''){
     return(
-        <div className = 'border-1 border-gray-700 p-12 px-20 rounded-xl'>
-        <div className = 'text-3xl font-bold py-4 '>Verification</div>
+        <div className = {fontSans.className}>
+        <div className = 'border-1 border-gray-700 p-12 px-20 rounded-xl bg-gradient-to-tr from-[#00111c] via-transparent to-[#11001c]'>
+        <div className = 'text-3xl font-thin bold py-4 '>Verification</div>
         <Input label = 'Enter your Email' value = {email} onValueChange={setEmail} className = 'py-4'/>
         <CheckboxGroup label = 'select your role' value = {role} onValueChange={setRole} className = 'py-4 gap-4 items-center'>
             <Checkbox value = 'writer'>Writer</Checkbox>
@@ -50,6 +56,7 @@ export default function PricingPage() {
         </CheckboxGroup>
         <div className = 'py-4'>
         <Button onClick = {UploadingData} className = 'px-20' variant = 'flat' color = 'success'>Verify</Button>
+        </div>
         </div>
         </div>
     )}

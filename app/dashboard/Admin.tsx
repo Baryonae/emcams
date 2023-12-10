@@ -1,19 +1,24 @@
 
 'use client'
 import React, { useState } from 'react'
-import {Card, CardHeader, CardBody, CardFooter, Divider, Link, Image, Button, Chip, Snippet, Input} from "@nextui-org/react";
+import {Card, CardHeader, CardBody, CardFooter, Divider, Link, Image, Button, Chip, Snippet, Input, CircularProgress} from "@nextui-org/react";
 import { HiMiniCog } from "react-icons/hi2";
 import { Inter as FontSans } from "next/font/google"
+import {Archivo as ArcFont} from 'next/font/google'
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue} from "@nextui-org/react";
 import supabase from './client'
 import { UserButton, useUser } from '@clerk/nextjs';
 import { MdOutlinePending } from "react-icons/md";
+import { CiLocationArrow1 } from "react-icons/ci";
+
 
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
 })
-
+const arcFont = ArcFont({
+    subsets: ['latin']
+})
 
 function Admin() {
       const { isLoaded, isSignedIn, user } = useUser();
@@ -83,12 +88,14 @@ function Admin() {
                 
             }
     }
+    const siteUrl = window.location.href.slice(0, -9) + "profile?user="
+    const profileUrl = siteUrl + user?.firstName
     getMagazines()
         return(
             
-            <div className = {fontSans.className}>
+            <div className = {arcFont.className}>
 
-                    <div className = 'inline-flex pt-8 max-sm:flex-col max-sm:flex max-sm:justify-center'>
+                    <div className = 'inline-flex pt-8 max-sm:flex-col max-sm:flex max-sm:justify-center font-thin'>
                         <div className = 'flex-col'>
 
 
@@ -110,13 +117,15 @@ function Admin() {
                         </div>
 
                         <div className = {notFoundVisibility}>
-                        <div className = 'h-40 w-96 border-1 border-gray-700 rounded-lg p-6 mr-8 '>
-                            <div className = ' text-gray-500'>
-                                Join magazine 
+                        <div className = 'h-42 w-96 border-1 border-gray-700 rounded-lg p-6 mr-8 '>
+                            <div className = ' '>
+                                Create new magazine
+                            </div>
+                            <div className = 'font-thin text-gray-300'>
+                                create new space and invite your people here
                             </div>
                             <div className = 'py-4 inline-flex'>
-                                <Input label = 'Enter magazine token' variant = 'bordered' className = 'max-w-[350px] w-[230px]' value = {magazineTokenValue} onValueChange = {setMagazineTokenValue}/>
-                                <Button className = 'h-13 mx-4' variant = 'bordered' onClick = {joinMagazine}>Join</Button>
+                                <Link href = 'createMagazine'><Button variant = 'flat' color = 'success'>Create</Button></Link>
                             </div>
                         </div>
                         </div>
@@ -136,7 +145,30 @@ function Admin() {
                           <div className = 'pl-6 pt-6 inline-flex'><UserButton /> <div className = ' px-4 text-lg inline-flex'>{user?.firstName} <div className = 'font-thin pl-4'>(Admin)</div></div></div>
                         </div>
                         
-                        <div className = 'w-72 pt-4'><div className=' pl-6 font-thin'><Snippet size = 'sm' className = 'font-thin text-xs w-80 '>{token}</Snippet></div></div>
+                        <div className = 'w-72 pt-4'><div className=' pl-6 font-thin'><Snippet size = 'sm' className = 'font-thin text-xs w-82 max-w-82 '>{profileUrl}</Snippet></div></div>
+                        </div>
+                        </div>
+                        <div className = 'flex-col'>
+                        <div className = {arcFont.className}><div className = 'w-80 bg-[#0a0a0a] p-8 h-42 rounded-2xl backdrop-blur-2xl bg-opacity-60 border-1 border-gray-700'><div className = ''>Apps</div>
+                        <div className = 'py-4'>
+                        <Button variant ='flat' color = 'secondary' className = 'h-12' size = 'sm'><CiLocationArrow1 size = {20}/></Button>    
+                        </div></div></div>
+                        <div>
+                            <div className = 'my-4 bg-black border-1 border-gray-700 rounded-2xl p-6 h-36 inline-flex'>
+                                <CircularProgress
+                                    classNames={{
+                                        svg: "w-24 h-26 drop-shadow-md",
+                                        indicator: 'stroke-violet-400',
+                                        track: "stroke-transparent",
+                                        value: "text-sm font-thin text-white",
+                                    }}
+                                    value={70}
+                                    showValueLabel={true}
+                                    /> 
+                                    <div className = 'w-44 p-6'>
+                                        <div className = 'text-xl'>1/4 Submissions</div>
+                                    </div>
+                            </div>
                         </div>
                         </div>
                     </div>

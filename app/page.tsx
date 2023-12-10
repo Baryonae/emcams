@@ -12,11 +12,18 @@ import { UserButton, useUser } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs";
 import { useState } from "react";
 import { redirect } from "next/navigation";
-import {Card, CardHeader, CardBody, CardFooter, Divider, Image} from "@nextui-org/react";
+import {Card, CardHeader, CardBody, CardFooter, Divider} from "@nextui-org/react";
 import { TiStarFullOutline } from "react-icons/ti";
 import { CiBookmark } from "react-icons/ci";
 import { CiLocationArrow1 } from "react-icons/ci";
+import { Inter as FontSans } from "next/font/google"
+import mainImage from './codeSnippet2.png'
+import Image from "next/image";
 
+const fontSans = FontSans({
+  subsets: ["latin"],
+  variable: "--font-sans",
+})
 
 const datas=[
 	{
@@ -53,7 +60,8 @@ export default function Home() {
 
 	}
 	return(
-		<div>
+		<div className = {fontSans.className}>
+			<div className = 'inline-flex max-sm:flex-col'>
 			<div className = 'py-20 w-1/2 mx-4'>
 			<div className = 'text-4xl  font-bold inline-flex gap-2'>Create<div className="text-4xl font-bold text-blue-400">beautiful 
 			</div></div>
@@ -64,7 +72,10 @@ export default function Home() {
 			<div className = 'flex '>
 			</div>
 			</div>
-
+			<div>
+				<Image width={600} alt = 'some image' src =	{mainImage} unoptimized={true} className = 'rounded-3xl h-max bg-gradient-radial bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-cyan-400 from-0% to-transparent via-30% via-cyan-950 to-55% ' />
+			</div>	
+			</div>
 			<div id = '#reviews' className = 'w-full bg-gradient-to-r from-transparent via-[#00091b] to-transparent h-full flex justify-center border-t border-b border-gray-800'>
 			<div className = 'py-20 px-4'>
 			{datas.map((data) => (	
@@ -86,6 +97,7 @@ export default function Home() {
 			))}
 			</div></div>
 			<div className = 'px-8 py-20' id = 'title'><div className = 'text-4xl font-bold'>Some Title</div></div>
+
 		</div>
 	)
 }
