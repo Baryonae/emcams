@@ -1,7 +1,7 @@
 # Emcams 
 (E - magazine control and management System)
 
-#Technologies Used
+## *Technologies Used*
 
 - NextJS
 - NextUI
