@@ -352,7 +352,6 @@ function Admin() {
                       className="h-12"
                       size="sm"
                     >
-                      P
                       <CiLocationArrow1 size={20} />
                     </Button>
                   </div>
