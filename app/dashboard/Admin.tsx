@@ -81,6 +81,7 @@ function Admin() {
   const [totalSubmissions, setTotalSubmissions] = useState<User[]>([]);
   const [submissionColor, setSubmissionColor] = useState("warning");
 
+
   async function getMagazines() {
     const { data: magazines } = await supabase
       .from("users")
