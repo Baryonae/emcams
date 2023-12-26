@@ -101,7 +101,7 @@ export default function Home() {
             alt="some image"
             src={mainImage}
             unoptimized={true}
-            className="rounded-3xl h-max bg-gradient-radial bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-cyan-400 from-0% to-transparent via-30% via-cyan-950 to-55%"
+            className="rounded-3xl h-max "
           />
         </div>
       </div>

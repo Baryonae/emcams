@@ -80,8 +80,7 @@ function Admin() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [totalSubmissions, setTotalSubmissions] = useState<User[]>([]);
   const [submissionColor, setSubmissionColor] = useState("warning");
-
-
+  const [disabledState, setDisabledState] = useState("isDisabled");
   async function getMagazines() {
     const { data: magazines } = await supabase
       .from("users")
@@ -283,6 +282,15 @@ function Admin() {
                   <div>
                     <Button color="primary" variant="flat" className="my-2">
                       Customize
+                    </Button>
+                    <Button
+                      className="mx-4"
+                      variant="light"
+                      color="danger"
+                      isDisabled
+                      //No functionality Added
+                    >
+                      Leave
                     </Button>
                   </div>
                 </div>
