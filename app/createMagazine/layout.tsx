@@ -22,5 +22,6 @@ export default function AboutLayout({
       </section>
     </div>
     //sample commit
+    //another commit
   );
 }
