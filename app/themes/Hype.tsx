@@ -22,24 +22,40 @@ const headingFont = Paytone_One({
 interface data {
   instagramUrl?: string | null;
   youtubeUrl?: string | null;
+  MagazineTitle?: string;
+  postData?: { postContent: string; postHeading: string }[];
+  subHeading?: string;
+  subSubHeading?: string;
 }
 //background 1200*600px
 function Hype(data: data) {
   if (data) {
     return (
       <div>
-        <div className="bg-[url(https://cdn.pixabay.com/photo/2020/12/25/04/51/polar-lights-5858656_1280.jpg)] p-10 rounded-2xl h-[600px] shadow-2xl shadow-white/25">
-          <div className="mx-12 max-sm:mx-12" id="headingSection">
+        <div className="bg-scroll bg-[url(https://cdn.pixabay.com/photo/2017/01/31/17/44/highway-2025863_1280.jpg)] p-10 rounded-2xl h-fit shadow-2xl shadow-white/25">
+          <div className="mx-12 max-sm:mx-auto" id="headingSection">
             <div className={headingFont.className}>
               <div className="mt-24 text-gray-300 text-5xl">
-                Magazine Heading
+                {data.MagazineTitle && <div>{data.MagazineTitle}</div>}
+                {!data.MagazineTitle && <div>Lorem Ipsum</div>}
               </div>
             </div>
             <div className={fontSans.className}>
-              <div className="text-gray-300 text-md my-6 w-1/3 max-sm:w-full">
-                This is the most epic thing in this universe hahaha this is the
-                subtitle im very proud of this site im very proud of this site
-                im very proud of this site
+              <div className="font-md text-gray-400 py-4">
+                {data.subSubHeading && <div>{data.subSubHeading}</div>}
+                {!data.subSubHeading && <div>What is Lorem Ipsum?</div>}
+              </div>
+            </div>
+            <div className={fontSans.className}>
+              <div className="text-gray-300 text-md my-4 w-1/3 max-sm:w-full">
+                {data.subHeading && <div>{data.subHeading}</div>}
+                {!data.subHeading && (
+                  <div>
+                    Lorem Ipsum is simply dummy text of the printing and
+                    typesetting industry. Lorem Ipsum has been the industry's
+                    standard dummy text ever since the 1500s
+                  </div>
+                )}
               </div>
               {data.instagramUrl && (
                 <div className="inline-flex gap-4 pr-4">
@@ -57,11 +73,11 @@ function Hype(data: data) {
               )}
               <div>
                 <div>
-                  <Link href="#coolShit" scroll={true}>
+                  <Link href="#startOfMagazine" scroll={true}>
                     <Button
                       variant="shadow"
                       color="primary"
-                      className="p-6 my-8"
+                      className="p-6 my-8 mb-20"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -79,13 +95,29 @@ function Hype(data: data) {
                       </svg>
                       Start Reading
                     </Button>
-                  </Link>{" "}
+                  </Link>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div className="py-20">Hmm</div>
+        <div className="py-60" id="startOfMagazine">
+          <div className={fontSans.className}>
+            <div className="text-4xl">Some Content</div>
+            <div className="py-10">
+              {data.postData?.map((post) => (
+                <div>
+                  <p className="text-4xl">
+                    <p className={headingFont.className}>{post.postHeading}</p>
+                  </p>
+                  <div>
+                    <p className=" py-8">{post.postContent}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

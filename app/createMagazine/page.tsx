@@ -37,7 +37,7 @@ export default function AboutPage() {
   uploadData();
   return (
     <div className={fontSans.className}>
-      <div className="inline-flex">
+      <div className="inline-flex max-sm:flex-col">
         <div>
           <div className="text-3xl font-bold">Create</div>
           <div>
@@ -147,8 +147,8 @@ export default function AboutPage() {
         </div>
 
         <div className="w-screen h-screen">
-          <div className="mx-12  w-1/2 bg-neutral-950 h-2/3 rounded-2xl p-8">
-            <ScrollShadow className="h-[550px] rounded-2xl bg-black">
+          <div className="mx-12 max-sm:mx-2 max-sm:w-fit max-sm:mr-12 max-sm:h-fit w-1/2 bg-neutral-950 h-2/3 rounded-2xl p-8">
+            <ScrollShadow className="h-[550px] w-fit rounded-2xl bg-black">
               <Navbar />
               <div className="mx-16 my-16">
                 <Hype />
