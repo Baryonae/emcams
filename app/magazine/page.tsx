@@ -6,22 +6,33 @@ import supabase from "./client";
 import { Button, Skeleton } from "@nextui-org/react";
 import Link from "next/link";
 interface Type {
-  postContent: { postContent: string; postHeading: string }[];
+  postData?: { postContent: string; postHeading: string }[];
   magazineDetails: { instagramLink: string; youtubeLink: string }[];
   youtubeLink: string;
   instagramLink: string;
   subSubHeading: string;
   subHeading: string;
 }
-function MagazinePage(type: Type) {
+
+type CombinedProps = Type & {
+  // Add any other props you expect from PageProps
+  // For example, params, searchParams, etc.
+  params?: any;
+  searchParams?: any;
+};
+
+function MagazinePage(props: CombinedProps) {
   const searchParams = useSearchParams();
   const magazineToken = searchParams.get("magazineToken");
   const [magazineTitle, setMagazineTitle] = useState("");
-  const [postContent, setPostContent] = useState<Type["postContent"]>([]);
-  const [youtubeLink, setYoutubeLink] = useState<Type["youtubeLink"]>();
-  const [instagramLink, setInstagramLink] = useState<Type["instagramLink"]>();
-  const [subHeading, setSubHeading] = useState<Type["subHeading"]>();
-  const [subSubHeading, setSubSubHeading] = useState<Type["subSubHeading"]>();
+  const [postContent, setPostContent] = useState<CombinedProps["postData"]>([]);
+  const [youtubeLink, setYoutubeLink] =
+    useState<CombinedProps["youtubeLink"]>();
+  const [instagramLink, setInstagramLink] =
+    useState<CombinedProps["instagramLink"]>();
+  const [subHeading, setSubHeading] = useState<CombinedProps["subHeading"]>();
+  const [subSubHeading, setSubSubHeading] =
+    useState<CombinedProps["subSubHeading"]>();
 
   async function extractMagazineName() {
     const { data: magazines } = await supabase

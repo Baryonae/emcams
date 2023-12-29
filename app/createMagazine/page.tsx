@@ -2,7 +2,7 @@
 import { title } from "@/components/primitives";
 import Image from "next/image";
 import UiBackground from "./ui.jpg";
-import { Fira_Code as FontMono, Inter as FontSans } from "next/font/google";
+
 import { Input } from "@nextui-org/input";
 import { Switch } from "@nextui-org/switch";
 import { cn } from "@nextui-org/system";
@@ -19,11 +19,6 @@ import {
 import { useState } from "react";
 import Hype from "../themes/Hype";
 
-export const fontSans = FontSans({
-  subsets: ["latin"],
-  variable: "--font-sans",
-});
-
 export default function AboutPage() {
   const [progressValue, setProgressValue] = useState(0);
   const [isSelected, setIsSelected] = useState(false);
@@ -32,7 +27,7 @@ export default function AboutPage() {
   async function uploadData() {}
   uploadData();
   return (
-    <div className={fontSans.className}>
+    <div>
       <div className="inline-flex max-sm:flex-col">
         <div>
           <div className="text-3xl font-bold">Create</div>
