@@ -7,7 +7,7 @@ import { Navbar } from "@/components/navbar";
 import { Link } from "@nextui-org/link";
 import clsx from "clsx";
 import { ClerkProvider } from "@clerk/nextjs";
-
+import { Viewport } from "next";
 export const metadata: Metadata = {
   title: {
     default: siteConfig.name,
@@ -25,6 +25,9 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport: Viewport = {
+  themeColor: "#000000",
+};
 export default function RootLayout({
   children,
 }: {

@@ -1,10 +1,13 @@
 import clsx from "clsx";
 import { Fira_Code as FontMono, Inter as FontSans } from "next/font/google";
-
+import { Viewport } from "next";
 export const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
 });
+export const viewport: Viewport = {
+  themeColor: "#00000",
+};
 export default function AboutLayout({
   children,
 }: {
