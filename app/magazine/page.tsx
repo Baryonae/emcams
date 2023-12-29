@@ -13,7 +13,7 @@ interface Type {
   subSubHeading: string;
   subHeading: string;
 }
-function page(type: Type) {
+function MagazinePage(type: Type) {
   const searchParams = useSearchParams();
   const magazineToken = searchParams.get("magazineToken");
   const [magazineTitle, setMagazineTitle] = useState("");
@@ -84,4 +84,4 @@ function page(type: Type) {
   );
 }
 
-export default page;
+export default MagazinePage;

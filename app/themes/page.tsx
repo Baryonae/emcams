@@ -14,7 +14,7 @@ const fontSans = FontSans({
   subsets: ["latin"],
   weight: "300",
 });
-function page() {
+function ThemesPage() {
   const searchParams = useSearchParams();
   const themeName = searchParams.get("themeName");
   return (
@@ -50,4 +50,4 @@ function page() {
   );
 }
 
-export default page;
+export default ThemesPage;

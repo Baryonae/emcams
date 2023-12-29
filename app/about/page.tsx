@@ -68,12 +68,12 @@ export default function AboutPage() {
             Software Developer (student)
           </div>
           <div className="my-6 font-thin w-unit-8xl text-xl">
-            This site is entirely designed and developed (full stack) by me , i
+            This site is entirely designed and developed (full stack) by me i
             used a number of trending technologies to make this happen such as
             nextjs tailwind react js clerk and much more! the source code is
             available for free on github in my landing page, hope you like the
-            experience of this site. Don't forget to leave some feedback about
-            my site, because it took a lot of effort to be made
+            experience of this site. Dont forget to leave some feedback about my
+            site, because it took a lot of effort to be made
           </div>
         </div>
       </div>

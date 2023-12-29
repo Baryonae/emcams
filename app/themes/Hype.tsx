@@ -7,7 +7,6 @@ import Link from "next/link";
 import { FaInstagram } from "react-icons/fa";
 import { IoLogoYoutube } from "react-icons/io5";
 
-import { Html } from "next/document";
 import { CiYoutube } from "react-icons/ci";
 //imported everything ig
 
@@ -52,7 +51,7 @@ function Hype(data: data) {
                 {!data.subHeading && (
                   <div>
                     Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry. Lorem Ipsum has been the industry's
+                    typesetting industry. Lorem Ipsum has been the industrys
                     standard dummy text ever since the 1500s
                   </div>
                 )}
@@ -106,7 +105,7 @@ function Hype(data: data) {
             <div className="text-4xl">Some Content</div>
             <div className="py-10">
               {data.postData?.map((post) => (
-                <div>
+                <div key={1}>
                   <p className="text-4xl">
                     <p className={headingFont.className}>{post.postHeading}</p>
                   </p>

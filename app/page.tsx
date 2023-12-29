@@ -111,7 +111,10 @@ export default function Home() {
       >
         <div className="py-20 px-4">
           {datas.map((data) => (
-            <div className="inline-flex gap-4 px-6 max-sm: py-8 max-sm:justify-center">
+            <div
+              className="inline-flex gap-4 px-6 max-sm: py-8 max-sm:justify-center"
+              key={1}
+            >
               <Card
                 isBlurred
                 className="max-w-[300px] dark:bg-default-100/40 py-2 px-2"

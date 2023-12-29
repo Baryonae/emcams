@@ -458,7 +458,7 @@ function Admin() {
                 </TableHeader>
                 <TableBody emptyContent={"No users to display"}>
                   {pendingUsers.map((user) => (
-                    <TableRow>
+                    <TableRow key={user.id}>
                       <TableCell>{user.username}</TableCell>
                       <TableCell>
                         <div>{user.role}</div>
