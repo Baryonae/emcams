@@ -141,7 +141,7 @@ export default function AboutPage() {
           <div className="mx-12 max-sm:mx-2 max-sm:w-fit max-sm:mr-12 max-sm:h-fit w-1/2 bg-neutral-950 h-2/3 rounded-2xl p-8">
             <ScrollShadow className="h-[550px] w-fit rounded-2xl bg-black">
               <Navbar />
-              <div className="mx-16 my-16">
+              <div className="mx-12 my-16">
                 <Hype />
               </div>
             </ScrollShadow>

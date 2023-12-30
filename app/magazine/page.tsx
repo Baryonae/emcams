@@ -1,38 +1,65 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Hype from "../themes/Hype";
 import { useSearchParams } from "next/navigation";
 import supabase from "./client";
 import { Button, Skeleton } from "@nextui-org/react";
 import Link from "next/link";
 interface Type {
-  postData?: { postContent: string; postHeading: string }[];
-  magazineDetails: { instagramLink: string; youtubeLink: string }[];
+  postData?: {
+    postContent: string;
+    postHeading: string;
+    postId: number;
+    className: string;
+  }[];
+  magazineDetails: {
+    instagramLink: string;
+    youtubeLink: string;
+  }[];
   youtubeLink: string;
   instagramLink: string;
   subSubHeading: string;
   subHeading: string;
+  imageUrl?: string;
 }
 
-type CombinedProps = Type & {
-  // Add any other props you expect from PageProps
-  // For example, params, searchParams, etc.
-  params?: any;
-  searchParams?: any;
-};
-
-function MagazinePage(props: CombinedProps) {
+function MagazinePage(data: Type) {
   const searchParams = useSearchParams();
   const magazineToken = searchParams.get("magazineToken");
   const [magazineTitle, setMagazineTitle] = useState("");
-  const [postContent, setPostContent] = useState<CombinedProps["postData"]>([]);
-  const [youtubeLink, setYoutubeLink] =
-    useState<CombinedProps["youtubeLink"]>();
-  const [instagramLink, setInstagramLink] =
-    useState<CombinedProps["instagramLink"]>();
-  const [subHeading, setSubHeading] = useState<CombinedProps["subHeading"]>();
-  const [subSubHeading, setSubSubHeading] =
-    useState<CombinedProps["subSubHeading"]>();
+  const [magazineId, setMagazineId] = useState();
+  const [postContent, setPostContent] = useState("");
+  const [postHeading, setPostHeading] = useState("");
+  const [postId, setPostId] = useState();
+  const [youtubeLink, setYoutubeLink] = useState<Type["youtubeLink"]>();
+  const [instagramLink, setInstagramLink] = useState<Type["instagramLink"]>();
+  const [subHeading, setSubHeading] = useState<Type["subHeading"]>();
+  const [subSubHeading, setSubSubHeading] = useState<Type["subSubHeading"]>();
+  const [postDetails, setPostDetails] = useState<Type["postData"]>([]);
+  const [imageUrl, setImageUrl] = useState<Type["imageUrl"]>();
+
+  //fetching imageData Link
+  useEffect(() => {
+    const fetchImage = async () => {
+      try {
+        const { data: imageData } = supabase.storage
+          .from("illustrations")
+          .getPublicUrl("10-14-Night-6k.jpg");
+
+        // Check if the publicUrl exists before updating the state
+        if (imageData && imageData.publicUrl) {
+          setImageUrl(imageData.publicUrl);
+        } else {
+          console.log("Image not found");
+        }
+      } catch (error) {
+        console.error("Error fetching image:");
+      }
+    };
+
+    // Call the fetchImage function only once when the component mounts
+    fetchImage();
+  }, []); // Empty dependency array ensures this effect runs only once
 
   async function extractMagazineName() {
     const { data: magazines } = await supabase
@@ -40,6 +67,10 @@ function MagazinePage(props: CombinedProps) {
       .select()
       .eq("magazineToken", magazineToken);
     const { data: postContent } = await supabase
+      .from("posts")
+      .select()
+      .eq("magazineToken", magazineToken);
+    const { data: postDetails } = await supabase
       .from("posts")
       .select()
       .eq("magazineToken", magazineToken);
@@ -54,11 +85,21 @@ function MagazinePage(props: CombinedProps) {
         setInstagramLink(detail.instagramLink);
         setSubHeading(detail.subHeading);
         setSubSubHeading(detail.subSubHeading);
+        setMagazineId(detail.id);
       });
     }
-    if (postContent) {
-      setPostContent(postContent);
+
+    if (postDetails) {
+      postDetails.map((post) => {
+        setPostHeading(post.postHeading);
+        setPostContent(post.postContent);
+        setPostId(post.id);
+      });
     }
+    if (postDetails) {
+      setPostDetails(postDetails);
+    }
+
     magazines?.map((magazine) => {
       if (magazine.status == "active") {
         setMagazineTitle(magazine.magazine_name);
@@ -74,11 +115,12 @@ function MagazinePage(props: CombinedProps) {
         <div>
           <Hype
             MagazineTitle={magazineTitle}
-            postData={postContent}
+            postData={postDetails}
             youtubeUrl={youtubeLink}
             instagramUrl={instagramLink}
             subHeading={subHeading}
             subSubHeading={subSubHeading}
+            imageUrl={imageUrl}
           />
         </div>
       )}

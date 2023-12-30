@@ -86,6 +86,11 @@ function Admin() {
       .from("users")
       .select()
       .eq("username", user?.firstName);
+    //backup option for getting Magazine owner
+    const { data: myMagazine } = await supabase
+      .from("magazines")
+      .select()
+      .eq("owner", user?.firstName);
     const { data: users } = await supabase
       .from("users")
       .select()
@@ -137,17 +142,31 @@ function Admin() {
     if (user?.firstName) {
       setUsername(user?.firstName);
     }
-    const ownerName = JSON.stringify(magaOwner).slice(11, -3);
+    if (magaOwner) {
+      const ownerName = JSON.stringify(magaOwner).slice(11, -3);
+      setOwner(ownerName);
+      console.log(JSON.stringify(magaOwner));
+    } else {
+      console.log("owner not found");
+    }
+
     setRole(JSON.stringify(roles).slice(10, -3));
     setToken(JSON.stringify(userTokens).slice(15, -3));
-    setOwner(ownerName);
+
     if (pendingUsersQuery) {
       setPendingUsers(pendingUsersQuery);
     }
     if (users) {
       setUserData(users);
     }
-
+    //magazine Owner Backup
+    //not needed
+    if (JSON.stringify(myMagazine) != "[]") {
+      console.log(JSON.stringify(myMagazine));
+    } else {
+      console.log("owner not found");
+    }
+    //not needed
     if (
       JSON.stringify(pendingAssignedMagazine) !==
       '[{"pendingMagazineRequest":null}]'
