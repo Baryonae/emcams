@@ -12,6 +12,7 @@ import { AiTwotoneLike } from "react-icons/ai";
 import supabase from "./client";
 
 import { CiYoutube } from "react-icons/ci";
+import HypeThemeInsider from "./HypeThemeInsider";
 //imported everything ig
 
 const fontSans = FontSans({
@@ -50,7 +51,6 @@ const themeFront = [
 //background 1200*600px
 function Hype(data: data) {
   const [likeStatus, setLikeStatus] = useState(false);
-
   if (data) {
     return (
       <div>
@@ -127,72 +127,104 @@ function Hype(data: data) {
           <div className={fontSans.className}>
             <div className="text-4xl">Posts</div>
             <div className="py-10">
-              {data.postData?.map((post) => (
-                <div key={post.postId}>
-                  <div className="mb-20 shadow-">
-                    <div className={post.className}>
-                      <div className="p-8 rounded-2xl">
-                        <div className="text-4xl">
-                          <div className={headingFont.className}>
-                            <div className="">{post.postHeading}</div>
+              {/* Here it started */}
+              {data.postData && (
+                <div>
+                  {data.postData?.map((post) => (
+                    <div key={post.postId}>
+                      <HypeThemeInsider
+                        postContent={post.postContent}
+                        postHeading={post.postHeading}
+                        className={post.className}
+                        postId={post.postId}
+                      />
+                      {/*Copied From here*/}
+                    </div>
+                  ))}
+                </div>
+              )}
+              {/* Here it ended */}
+              {!data.postData && (
+                <div>
+                  <div key={1}>
+                    <div className="mb-20 shadow-">
+                      <div className="bg-[#f5ebe0] text-[#0d1b2a] rounded-2xl ">
+                        <div className="p-8 rounded-2xl">
+                          <div className="text-4xl">
+                            <div className={headingFont.className}>
+                              <div className="">Heading 1</div>
+                            </div>
                           </div>
-                        </div>
-                        <div>
-                          <p className="w-full py-8 inline-flex max-sm:flex-col">
-                            <div className="w-1/2 pr-6 max-sm:w-full">
-                              {post.postContent}
-                              <div className="py-4 border-1 border-dashed border-black w-fit px-6 my-8 rounded-2xl italic">
-                                By Author
+                          <div>
+                            <div className="w-full py-8 inline-flex max-sm:flex-col">
+                              <div className="w-1/2 pr-6 max-sm:w-full">
+                                t is a long established fact that a reader will
+                                be distracted by the readable content of a page
+                                when looking at its layout. The point of using
+                                Lorem Ipsum is that it has a more-or-less normal
+                                distribution of letters, as opposed to using
+                                'Content here, content here', making it look
+                                like readable English. Many desktop publishing
+                                packages and web page editors now use Lorem
+                                Ipsum as their default model text, and a search
+                                for 'lorem ipsum' will uncover many web sites
+                                still in their infancy. Various versions have
+                                evolved over the years, sometimes by accident,
+                                sometimes on purpose (injected humour and the
+                                like).
+                                <div className="py-4 border-1 border-dashed border-black w-fit px-6 my-8 rounded-2xl italic">
+                                  By Author
+                                </div>
+                              </div>
+                              <div className="w-1/2 max-sm:w-full max-sm:py-8">
+                                <Card
+                                  isFooterBlurred
+                                  radius="lg"
+                                  className="border-none"
+                                >
+                                  <Image
+                                    isBlurred
+                                    width={600}
+                                    alt="image not found"
+                                    src="https://nextui-docs-v2.vercel.app/images/hero-card-complete.jpeg"
+                                  />
+                                  <CardFooter className="justify-between before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] shadow-small ml-1 z-10">
+                                    <div className="p-2 flex justify-center items-center">
+                                      <div className="text-tiny text-white/80">
+                                        Illustrated By Someone
+                                      </div>
+                                    </div>
+                                    <div>
+                                      <Button
+                                        variant="flat"
+                                        className="bg-black/20"
+                                        onClick={() => {
+                                          setLikeStatus(
+                                            (likeStatus) => !likeStatus
+                                          );
+                                        }}
+                                      >
+                                        {likeStatus == false && (
+                                          <AiOutlineLike size={20} />
+                                        )}
+                                        {likeStatus == true && (
+                                          <div className="transform-gpu transition-all">
+                                            <AiTwotoneLike size={20} />
+                                          </div>
+                                        )}
+                                      </Button>
+                                    </div>
+                                  </CardFooter>
+                                </Card>
                               </div>
                             </div>
-                            <div className="w-1/2 max-sm:w-full max-sm:py-8">
-                              <Card
-                                isFooterBlurred
-                                radius="lg"
-                                className="border-none"
-                              >
-                                <Image
-                                  isBlurred
-                                  width={600}
-                                  alt="image not found"
-                                  src={data.imageUrl}
-                                />
-                                <CardFooter className="justify-between before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] shadow-small ml-1 z-10">
-                                  <div className="p-2 flex justify-center items-center">
-                                    <p className="text-tiny text-white/80">
-                                      Illustrated By Someone
-                                    </p>
-                                  </div>
-                                  <div>
-                                    <Button
-                                      variant="flat"
-                                      className="bg-black/20"
-                                      onClick={() => {
-                                        setLikeStatus(
-                                          (likeStatus) => !likeStatus
-                                        );
-                                      }}
-                                    >
-                                      {likeStatus == false && (
-                                        <AiOutlineLike size={20} />
-                                      )}
-                                      {likeStatus == true && (
-                                        <div className="transform-gpu transition-all">
-                                          <AiTwotoneLike size={20} />
-                                        </div>
-                                      )}
-                                    </Button>
-                                  </div>
-                                </CardFooter>
-                              </Card>
-                            </div>
-                          </p>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              ))}
+              )}
             </div>
           </div>
         </div>

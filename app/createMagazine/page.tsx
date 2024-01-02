@@ -24,6 +24,13 @@ export default function AboutPage() {
   const [isSelected, setIsSelected] = useState(false);
   const [titleValue, setTitleValue] = useState("");
   const [selectedTheme, setSelectedTheme] = useState("");
+  function requestAccess() {
+    if ("Notification" in window) {
+      Notification.requestPermission().then(() => {
+        console.log("permitted");
+      });
+    }
+  }
   async function uploadData() {}
   uploadData();
   return (
