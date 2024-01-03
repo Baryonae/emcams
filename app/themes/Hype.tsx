@@ -1,12 +1,19 @@
 "use client";
 import React, { useState } from "react";
-import { Poppins as FontSans } from "next/font/google";
+import { Anton, Poppins as FontSans } from "next/font/google";
 import { Paytone_One } from "next/font/google";
 import { Button } from "@nextui-org/button";
 import Link from "next/link";
 import { FaInstagram } from "react-icons/fa";
 import { IoLogoYoutube } from "react-icons/io5";
-import { Card, CardFooter, Image } from "@nextui-org/react";
+import {
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+  Divider,
+  Image,
+} from "@nextui-org/react";
 import { AiOutlineLike } from "react-icons/ai";
 import { AiTwotoneLike } from "react-icons/ai";
 import supabase from "./client";
@@ -14,7 +21,10 @@ import supabase from "./client";
 import { CiYoutube } from "react-icons/ci";
 import HypeThemeInsider from "./HypeThemeInsider";
 //imported everything ig
-
+const anton = Anton({
+  subsets: ["latin"],
+  weight: "400",
+});
 const fontSans = FontSans({
   subsets: ["latin"],
   weight: "300",
@@ -37,7 +47,26 @@ interface data {
   subSubHeading?: string;
   imageUrl?: string;
 }
-
+const reviews = [
+  {
+    src: "https://media.licdn.com/dms/image/C4D03AQEwdTv8QHvZqA/profile-displayphoto-shrink_800_800/0/1578071679934?e=2147483647&v=beta&t=ktR8yIIyu-BxBocxg3qGhFNhdxWz1gWgzBRLURFUzpg",
+    topmostHeading: "topmostHeading",
+    topHeading: "top Heading Here",
+    body: "body here so here it goes without any effort hahahha s without any effort hahahhas without any effort hahahhas without any effort hahahhas without any ",
+  },
+  {
+    src: "https://pbs.twimg.com/profile_images/994592419705274369/RLplF55e_400x400.jpg",
+    topmostHeading: "Teacher 1",
+    topHeading: "top Heading Here",
+    body: "body here so here it goes without any effort hahahha s without any effort hahahhas without any effort hahahhas without any effort hahahhas without any ",
+  },
+  {
+    src: "https://www.himalmag.com/wp-content/uploads/2019/07/sample-profile-picture.png",
+    topmostHeading: "Teacher 2",
+    topHeading: "top Heading Here",
+    body: "body here so here it goes without any effort hahahha s without any effort hahahhas without any effort hahahhas without any effort hahahhas without any ",
+  },
+];
 const themeFront = [
   {
     key: 1,
@@ -123,7 +152,74 @@ function Hype(data: data) {
             </div>
           </div>
         </div>
-        <div className="py-60" id="startOfMagazine">
+        <div id="contents" className="mt-40 mb-20">
+          <div className="h-fit p-12 bg-[#fefae0] text-[#283618] rounded-2xl">
+            <div className="text-5xl font-extrabold">
+              <div className={headingFont.className}>
+                From the Principal's Desk
+              </div>
+              <div className={fontSans.className}>
+                <div className="inline-flex max-sm:flex-col max-sm:w-full">
+                  <div className="pt-12 text-2xl w-1/4 max-sm:w-full ">
+                    <Image
+                      src="https://preview.keenthemes.com/metronic-v4/theme_rtl/assets/pages/media/profile/profile_user.jpg"
+                      width="200"
+                      className="rounded-full"
+                    />
+                  </div>
+                  <div className="text-xl py-12 w-2/3 max-sm:w-full break-words">
+                    Here the paragraph starts and idk how far it will go but it
+                    will go somewhere hahah ok so thi is oidjaosijd Here the
+                    paragraph starts and idk how far it will go but it will go
+                    somewhere hahah ok so thi is oidjaosijdHere the paragraph
+                    starts and idk how far it will go but it will go somewhere
+                    hahah ok so thi is oidjaosijdHere the paragraph starts and
+                    idk how far it will go but it will go somewhere hahah ok so
+                    thi is oidjaosijdHere the paragraph starts and idk how far
+                    it will go but it will go somewhere hahah ok so thi is
+                    oidjaosijd
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="flex justify-center items-center mt-20">
+            <div className="">
+              {reviews.map((data) => (
+                <div
+                  className="inline-flex gap-4 px-6 max-sm: py-8 max-sm:justify-center"
+                  key={1}
+                >
+                  <Card
+                    isBlurred
+                    className="max-w-[350px] dark:bg-default-100/40 py-2 px-2"
+                  >
+                    {" "}
+                    <CardHeader className="flex gap-3">
+                      <Image
+                        src={data.src}
+                        width="50"
+                        height="50"
+                        className="rounded-full mx-4 my-2"
+                      />
+
+                      <div className="flex-col">
+                        <div>{data.topmostHeading}</div>
+                        <div className="text-gray-500">{data.topHeading}</div>
+                      </div>
+                    </CardHeader>
+                    <CardBody>
+                      <Divider className="mb-8" />
+                      <div className="mx-4 mb-4">{data.body}</div>
+                    </CardBody>
+                  </Card>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="py-6" id="startOfMagazine">
           <div className={fontSans.className}>
             <div className="text-4xl">Posts</div>
             <div className="py-10">
@@ -138,6 +234,7 @@ function Hype(data: data) {
                         className={post.className}
                         postId={post.postId}
                       />
+                      <Divider className="my-8" />
                       {/*Copied From here*/}
                     </div>
                   ))}

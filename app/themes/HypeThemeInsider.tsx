@@ -6,10 +6,11 @@ import { Button } from "@nextui-org/button";
 import Link from "next/link";
 import { FaInstagram } from "react-icons/fa";
 import { IoLogoYoutube } from "react-icons/io5";
-import { Card, CardFooter, Image } from "@nextui-org/react";
+import { Card, CardFooter, Divider, Image } from "@nextui-org/react";
 import { AiOutlineLike } from "react-icons/ai";
 import { AiTwotoneLike } from "react-icons/ai";
 import supabase from "./client";
+import { CiShare2 } from "react-icons/ci";
 
 import { CiYoutube } from "react-icons/ci";
 //imported everything ig
@@ -50,7 +51,7 @@ function HypeThemeInsider(data: Type) {
     <div>
       <div>
         <div key={data.postId}>
-          <div className="mb-20 shadow-">
+          <div className="mb-6 shadow-">
             <div className={data.className}>
               <div className="p-8 rounded-2xl">
                 <div className="text-4xl">
@@ -62,8 +63,15 @@ function HypeThemeInsider(data: Type) {
                   <div className="w-full py-8 inline-flex max-sm:flex-col">
                     <div className="w-1/2 pr-6 max-sm:w-full">
                       {data.postContent}
-                      <div className="py-4 border-1 border-dashed border-black w-fit px-6 my-8 rounded-2xl italic">
-                        By Author
+                      <div className="">
+                        <div className="py-4 inline-flex border-1 border-dashed border-black w-fit px-6 my-8 rounded-2xl italic">
+                          By Author{" "}
+                          <div className="inline-flex pl-6">
+                            <Link href="">
+                              <CiShare2 className="" size={25} />
+                            </Link>
+                          </div>
+                        </div>
                       </div>
                     </div>
                     <div className="w-1/2 max-sm:w-full max-sm:py-8">
