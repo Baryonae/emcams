@@ -20,6 +20,7 @@ import supabase from "./client";
 
 import { CiYoutube } from "react-icons/ci";
 import HypeThemeInsider from "./HypeThemeInsider";
+import HypeContents from "./HypeContents";
 //imported everything ig
 const anton = Anton({
   subsets: ["latin"],
@@ -218,7 +219,18 @@ function Hype(data: data) {
             </div>
           </div>
         </div>
-
+        <div id="#contents">
+          <div className="h-fit w-full bg-[#edf2fb] rounded-2xl">
+            <div className="bg-[#d7e3fc] border-1 border-[#00b4d8] p-20 rounded-tr-2xl rounded-tl-2xl">
+              <div className="text-[#014f86] items-center justify-centeer text-center text-5xl">
+                <div className={headingFont.className}>Contents</div>
+              </div>
+            </div>
+            <div className="p-20 text-black">
+              <HypeContents />
+            </div>
+          </div>
+        </div>
         <div className="py-6" id="startOfMagazine">
           <div className={fontSans.className}>
             <div className="text-4xl">Posts</div>
