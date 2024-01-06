@@ -36,12 +36,7 @@ function App() {
       .from("users")
       .select()
       .eq("username", user?.firstName);
-    roles?.map((role) => {
-      if (role.role == "writer") {
-        setMainVisibility("");
-      } else {
-      }
-    });
+    roles?.map((role) => {});
   }
   const UploadPost = async (e: any) => {
     const formattedValue = value.replace(/\n/g, "<br>");
@@ -67,7 +62,7 @@ function App() {
   return (
     <div className={fontSans.className}>
       {magazineToken && (
-        <div className={mainVisibility}>
+        <div>
           <div className="text-2xl my-4 font-thin max-sm:flex max-sm:justify-center max-sm:items-center">
             <div className={fontSans.className}>
               {articleHeading.length == 0 && <div>New Submission</div>}
