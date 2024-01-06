@@ -2,11 +2,7 @@ import React, { useState, useEffect } from "react";
 import supabase from "./client";
 import { useSearchParams } from "next/navigation";
 
-interface Type {
-  postHeadings: any[];
-}
-
-function HypeContents(data: Type) {
+function HypeContents() {
   const [postHeadings, setPostHeadings] = useState<any[] | null>(null);
   const searchParams = useSearchParams();
   const magazineToken = searchParams.get("magazineToken");

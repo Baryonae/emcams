@@ -62,7 +62,13 @@ function HypeThemeInsider(data: Type) {
                 <div>
                   <div className="w-full py-8 inline-flex max-sm:flex-col">
                     <div className="w-1/2 pr-6 max-sm:w-full">
-                      {data.postContent}
+                      {/* Displaying the post content later */}
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: data.postContent,
+                        }}
+                      />
+
                       <div className="">
                         <div className="py-4 inline-flex border-1 border-dashed border-black w-fit px-6 my-8 rounded-2xl italic">
                           By Author{" "}
