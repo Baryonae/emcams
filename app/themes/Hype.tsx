@@ -202,6 +202,7 @@ function Hype(data: data) {
                         width="50"
                         height="50"
                         className="rounded-full mx-4 my-2"
+                        alt="https://png.pngtree.com/png-vector/20190508/ourmid/pngtree-gallery-vector-icon-png-image_1028015.jpg"
                       />
 
                       <div className="flex-col">
